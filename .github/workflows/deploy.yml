@@ -1,0 +1,35 @@
+name: Deploy to github pages
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-site:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Cache Node (npm) dependencies
+        uses: actions/cache@v1
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install NPM Dependencies
+        run: npm install
+      - name: Optimize build for production
+        run: npm run prod
+      - name: Stage Files
+        run: git add .
+      - name: Commit files
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "GitHub Actions"
+          git commit -m "build: optimizing build for deploy"
+      - name: Publish
+        run: |
+          git subtree split --prefix public -b gh-pages
+          git push -f origin gh-pages:gh-pages
+          git branch -D gh-pages
