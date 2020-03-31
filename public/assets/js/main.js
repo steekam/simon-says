@@ -19,11 +19,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
   console.log(game);
 });
-
-function showInstructions() {
-  document.querySelector('.instructions').classList.remove('hidden');
-}
-
-function dismissInstructions() {
-  document.querySelector('.instructions').classList.add('hidden');
-}
