@@ -4,8 +4,7 @@
   "description": "",
   "scripts": {
     "build": "postcss -o public/assets/css/main.css src/main.css",
-    "prod": "cross-env NODE_ENV=production postcss -o public/assets/main.css src/main.css",
-    "test": "jest"
+    "prod": "cross-env NODE_ENV=production postcss -o public/assets/css/main.css src/main.css"
   },
   "keywords": [],
   "author": "",
