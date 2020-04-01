@@ -9,12 +9,10 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
-
 </head>
 
 <body class="bg-gray-300 font-sans antialiased">
-  <main
-    class="pb-10 max-w-screen-md mx-auto bg-gray-100 h-screen lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
+  <main id="app" class="pb-10 relative max-w-screen-md mx-auto bg-gray-100 h-screen lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
     <nav class="w-full bg-white py-3 px-4 bg-teal-700 flex justify-between items-center">
       <div>
         <h1 class="text-xl sm:text-2xl font-bold text-white">Simon Says Game</h1>
@@ -64,16 +62,15 @@
       <!-- Game stats -->
       <div class="mt-2 mx-4 px-6 py-3 shadow rounded bg-white">
         <p class="font-semibold text-teal-600">
-          Level: <span class="font-bold" id="level-id">1</span>
+          Level: <span class="font-bold" x-text="level.id"></span>
         </p>
         <ul class="grid grid-cols-2">
-          <li>Sequence Length: <span class="font-bold" id="sequence-length">4</span> </li>
-          <li>Entries left: <span class="font-bold" id="entries-left">2</span></li>
-          <li>Success streak: <span class="font-bold" id="success-streak">1</span></li>
-          <li>Left until next level: <span class="font-bold" id="left-to-advance">1</span></li>
+          <li>Sequence Length: <span class="font-bold" x-text="level.sequenceLength"></span> </li>
+          <li>Entries left: <span class="font-bold" x-text="game.entriesLeft"></span></li>
+          <li>Success streak: <span class="font-bold" x-text="game.successStreak"></span></li>
+          <li>Streak to advance: <span class="font-bold" x-text="game.successLeftToAdvance"></span></li>
         </ul>
       </div>
-
       <!-- END Game stats -->
 
       <!-- Sequence Display -->
@@ -90,7 +87,7 @@
           <p class="text-6xl text-gray-700 font-mono"></p>
         </div>
 
-        <div class="sequence-display relative grid grid-cols-1 grid-rows-1 h-full items-center justify-center">
+        <div class="sequence-display hidden relative grid grid-cols-1 grid-rows-1 h-full items-center justify-center">
           <div class="blue absolute inset-0 w-full h-full bg-blue-500 flex items-center justify-center">
             <p class="text-white text-xl">Blue</p>
           </div>
@@ -113,7 +110,7 @@
         <div class="controls max-w-md mx-auto">
           <div class="inline-flex rounded-md shadow-sm">
             <button type="button" onclick="buttonSelected('blue')"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-110  active:bg-blue-700 transition ease-in-out duration-150">
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-110 active:bg-blue-700 transition ease-in-out duration-150">
               Blue
             </button>
           </div>
@@ -142,8 +139,47 @@
       </div>
       <!-- END Controls -->
     </section>
+
+    <!-- MODALS -->
+    <div class="success hidden absolute inset-0 bottom-0">
+        <div class="fixed inset-0">
+          <div class="absolute inset-0 bg-gray-200 opacity-50"></div>
+        </div>
+        <div class="h-full flex justify-center items-center">
+          <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:p-6">
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+              <svg class="h-6 w-6 text-green-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+            </div>
+            <h3 class="text-lg text-center leading-6 font-medium text-gray-900 mt-2">
+              You got it :)
+            </h3>
+          </div>
+        </div>
+    </div>
+
+    <div class="failure hidden absolute inset-0 bottom-0">
+      <div class="fixed inset-0">
+        <div class="absolute inset-0 bg-gray-200 opacity-50"></div>
+      </div>
+      <div class="h-full flex justify-center items-center">
+        <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:p-6">
+          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
+            <svg class="h-6 w-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+              <path d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z"/>
+            </svg>
+          </div>
+          <h3 class="text-lg text-center leading-6 font-medium text-gray-900 mt-2">
+            Ooops wrong :(
+          </h3>
+        </div>
+      </div>
+  </div>
+    <!-- END MODALS -->
   </main>
 
+  <script src="assets/js/util.js"></script>
   <script src="assets/js/gameLogic.js"></script>
   <script src="assets/js/main.js"></script>
 </body>

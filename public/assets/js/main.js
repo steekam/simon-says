@@ -1,6 +1,16 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // start game
-  newGame();
+  // Initialise app
+  window.root  = document.querySelector('#app');
 
-  // giveNextSequence();
+  let game = newGame();
+  let level = {...initialLevel()};
+  game.successLeftToAdvance = level.successToAdvance;
+
+  window.state = createState({
+    game,
+    level,
+    renderingSequence: false,
+    firstGame: true,
+  });
+  refreshDom();
 });
