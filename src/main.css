@@ -4,3 +4,41 @@
 /* purgecss end ignore */
 
 @tailwind utilities;
+
+.controls {
+  display: grid;
+  grid-template-areas: ". blue ."
+                       "red . green"
+                       ". yellow .";
+  justify-items: center;
+}
+
+.controls > div:nth-child(1) {
+  grid-area: blue;
+}
+
+.controls > div:nth-child(2) {
+  grid-area: green;
+}
+
+.controls > div:nth-child(3) {
+  grid-area: yellow;
+}
+
+.controls > div:nth-child(4) {
+  grid-area: red;
+}
+
+.sequence-display > div:not(.active) {
+  @apply invisible opacity-0 transition ease-linear duration-500;
+}
+
+.sequence-display > div.active {
+  @apply transition ease-linear duration-150;
+  animation: fadeIn .15s linear;
+}
+
+@keyframes fadeIn {
+  0% { @apply invisible opacity-25; }
+  100% { @apply visible opacity-100; }
+}

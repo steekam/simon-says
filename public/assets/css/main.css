@@ -13972,6 +13972,62 @@ video {
   transition-duration: 1000ms;
 }
 
+.controls {
+  display: grid;
+  grid-template-areas: ". blue ."
+                       "red . green"
+                       ". yellow .";
+  justify-items: center;
+}
+
+.controls > div:nth-child(1) {
+  grid-area: blue;
+}
+
+.controls > div:nth-child(2) {
+  grid-area: green;
+}
+
+.controls > div:nth-child(3) {
+  grid-area: yellow;
+}
+
+.controls > div:nth-child(4) {
+  grid-area: red;
+}
+
+.sequence-display > div:not(.active) {
+  visibility: hidden;
+  opacity: 0;
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: linear;
+  transition-duration: 500ms;
+}
+
+.sequence-display > div.active {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: linear;
+  transition-duration: 150ms;
+  -webkit-animation: fadeIn .15s linear;
+          animation: fadeIn .15s linear;
+}
+
+@-webkit-keyframes fadeIn {
+  0% { visibility: hidden; opacity: 0.25;
+  }
+
+  100% { visibility: visible; opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  0% { visibility: hidden; opacity: 0.25;
+  }
+
+  100% { visibility: visible; opacity: 1;
+  }
+}
+
 @media (min-width: 640px) {
   .sm\:sr-only {
     position: absolute;

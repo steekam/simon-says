@@ -5,64 +5,47 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Simon Says Memory Game</title>
+  <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/main.css">
 
-  <style>
-    .controls {
-      display: grid;
-      grid-template-areas: ". blue ."
-                           "red . green"
-                           ". yellow .";
-      justify-items: center;
-    }
-
-    .controls > div:nth-child(1) {
-      grid-area: blue;
-    }
-
-    .controls > div:nth-child(2) {
-      grid-area: green;
-    }
-
-    .controls > div:nth-child(3) {
-      grid-area: yellow;
-    }
-
-    .controls > div:nth-child(4) {
-      grid-area: red;
-    }
-  </style>
 </head>
 
 <body class="bg-gray-300 font-sans antialiased">
-  <main class="pb-10 max-w-screen-md mx-auto bg-gray-100 h-screen lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
+  <main
+    class="pb-10 max-w-screen-md mx-auto bg-gray-100 h-screen lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
     <nav class="w-full bg-white py-3 px-4 bg-teal-700 flex justify-between items-center">
       <div>
         <h1 class="text-xl sm:text-2xl font-bold text-white">Simon Says Game</h1>
       </div>
 
       <div class="inline-flex">
-        <button title="Show instructions" onclick="document.querySelector('.instructions').classList.remove('hidden')" class="mr-2 flex items-center justify-center">
+        <button title="Show instructions" onclick="document.querySelector('.instructions').classList.remove('hidden')"
+          class="mr-2 flex items-center justify-center">
           <svg class="h-6 w-6 fill-current text-white">
-            <path class="heroicon-ui" d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zM10.59 8.59a1 1 0 11-1.42-1.42 4 4 0 115.66 5.66l-2.12 2.12a1 1 0 11-1.42-1.42l2.12-2.12A2 2 0 0010.6 8.6zM12 18a1 1 0 110-2 1 1 0 010 2z"/>
+            <path class="heroicon-ui"
+              d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zM10.59 8.59a1 1 0 11-1.42-1.42 4 4 0 115.66 5.66l-2.12 2.12a1 1 0 11-1.42-1.42l2.12-2.12A2 2 0 0010.6 8.6zM12 18a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
         </button>
 
         <div class="inline-flex rounded-md shadow-sm">
-          <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150">
+          <button type="button" onclick="giveNextSequence()"
+            class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150">
             Play
           </button>
         </div>
       </div>
     </nav>
 
+    <!-- Instructions -->
     <section class="instructions px-4 mt-3 hidden">
       <div class="px-6 py-3 shadow rounded bg-white relative">
-        <button title="Dismiss" onclick="document.querySelector('.instructions').classList.add('hidden')" class="absolute inset-y-0 right-0 mt-2 mr-2 h-6 w-6 flex items-center justify-center">
+        <button title="Dismiss" onclick="document.querySelector('.instructions').classList.add('hidden')"
+          class="absolute inset-y-0 right-0 mt-2 mr-2 h-6 w-6 flex items-center justify-center">
           <svg class="h-full w-full" viewBox="0 0 24 24">
-            <path class="heroicon-ui" d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z"/>
+            <path class="heroicon-ui"
+              d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z" />
           </svg>
         </button>
 
@@ -75,8 +58,10 @@
         </ul>
       </div>
     </section>
+    <!-- END Instructions -->
 
     <section>
+      <!-- Game stats -->
       <div class="mt-2 mx-4 px-6 py-3 shadow rounded bg-white">
         <p class="font-semibold text-teal-600">
           Level: <span class="font-bold" id="level-id">1</span>
@@ -89,48 +74,73 @@
         </ul>
       </div>
 
-      <div class="sequence-display px-4 mt-5 flex items-center justify-center">
-        <div class="blue bg-blue-500 h-24 w-24 flex items-center justify-center sm:h-32 sm:w-32">
-          <p class="text-white text-xl">Blue</p>
+      <!-- END Game stats -->
+
+      <!-- Sequence Display -->
+      <div class="relative mt-5 h-32 w-32 mx-auto">
+        <div class="play-prompt shadow-lg w-full h-full flex items-center justify-center">
+          <p class="text-base text-gray-700 font-semibold text-center">Click play to start</p>
         </div>
-        <div class="green hidden bg-green-500 h-24 w-24 flex items-center justify-center sm:h-32 sm:w-32">
-          <p class="text-white text-xl">Green</p>
+
+        <div class="hidden input-prompt shadow-lg w-full h-full flex items-center justify-center">
+          <p class="text-base text-gray-700 font-semibold text-center">Input the sequence</p>
         </div>
-        <div class="yellow hidden bg-yellow-500 h-24 w-24 flex items-center justify-center sm:h-32 sm:w-32">
-          <p class="text-white text-xl">Yellow</p>
+        
+        <div class="hidden counter shadow-lg w-full h-full flex items-center justify-center">
+          <p class="text-6xl text-gray-700 font-mono"></p>
         </div>
-        <div class="red hidden bg-red-500 h-24 w-24 flex items-center justify-center sm:h-32 sm:w-32">
-          <p class="text-white text-xl">Red</p>
+
+        <div class="sequence-display relative grid grid-cols-1 grid-rows-1 h-full items-center justify-center">
+          <div class="blue absolute inset-0 w-full h-full bg-blue-500 flex items-center justify-center">
+            <p class="text-white text-xl">Blue</p>
+          </div>
+
+          <div class="green absolute inset-0 w-full h-full bg-green-500 flex items-center justify-center">
+            <p class="text-white text-xl">Green</p>
+          </div>
+          <div class="yellow absolute inset-0 w-full h-full bg-yellow-500 flex items-center justify-center">
+            <p class="text-white text-xl">Yellow</p>
+          </div>
+          <div class="red absolute inset-0 w-full h-full bg-red-500 flex items-center justify-center">
+            <p class="text-white text-xl">Red</p>
+          </div>
         </div>
       </div>
+      <!-- END Sequence Display -->
 
+      <!-- Controls -->
       <div class="mt-10">
         <div class="controls max-w-md mx-auto">
           <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('blue')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-110  active:bg-blue-700 transition ease-in-out duration-150">
+            <button type="button" onclick="buttonSelected('blue')"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-110  active:bg-blue-700 transition ease-in-out duration-150">
               Blue
             </button>
           </div>
 
           <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('green')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green focus:transform focus:scale-110 active:bg-green-700 transition ease-in-out duration-150">
+            <button type="button" onclick="buttonSelected('green')"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green focus:transform focus:scale-110 active:bg-green-700 transition ease-in-out duration-150">
               Green
             </button>
           </div>
 
           <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('yellow')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:shadow-outline-yellow focus:transform focus:scale-110 active:bg-yellow-700 transition ease-in-out duration-150">
+            <button type="button" onclick="buttonSelected('yellow')"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:shadow-outline-yellow focus:transform focus:scale-110 active:bg-yellow-700 transition ease-in-out duration-150">
               Yellow
             </button>
           </div>
 
           <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('red')" class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red focus:transform focus:scale-110 active:bg-red-700 transition ease-in-out duration-150">
+            <button type="button" onclick="buttonSelected('red')"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red focus:transform focus:scale-110 active:bg-red-700 transition ease-in-out duration-150">
               Red
             </button>
           </div>
         </div>
       </div>
+      <!-- END Controls -->
     </section>
   </main>
 

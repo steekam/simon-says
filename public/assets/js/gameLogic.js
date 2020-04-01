@@ -2,10 +2,58 @@ const GAME_COLORS = ["blue", "green", "yellow", "red"];
 let INPUT_MODE = 'TOUCH_MODE';
 
 // Utilities
+/**
+ * Sleep for set milliseconds
+ * @param {int} ms 
+ */
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+/**
+ * Add hidden class from element
+ * @param {*} element 
+ */
+function hideElement(element) {
+  if (!element.classList.contains('hidden')) {
+    element.classList.add('hidden')
+  }
+}
+
+/**
+ * Remove hidden class from element
+ * @param {*} element 
+ */
+function showElement(element) {
+  if (element.classList.contains('hidden')) {
+    element.classList.remove('hidden')
+  }
+}
+
 function getRandomIntInclusive(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
+
+/**
+ * Display counter in element
+ * @param {*} element 
+ * @param {number} countTo 
+ * @param {boolean} forward Default: true
+ */
+async function counter(element, countTo, forward = true) {
+  return new Promise(async resolve => {
+    let count = forward ? 1 : countTo;
+    const condtion = () => forward ? count <= countTo : count > 0;
+    const next = () => forward ? count++ : count--;
+
+    for (count; condtion(); next()) {
+      element.innerHTML = count;
+      await sleep(800);
+    }
+    resolve();
+  });
 }
 
 /**
@@ -46,7 +94,7 @@ function showFailure() {
  */
 function displayToastMessage(message) {
   // todo
-  
+
 }
 
 const Level = {
@@ -102,23 +150,74 @@ function userChoiceTimeOut() {
  * Random sequence of colors to display
  * @returns list
  */
-function giveNextSequence() {
+async function giveNextSequence() {
   const { currentLeveL } = game;
-
-  // todo: missing checks
-
   const sequence = [];
+
   for (let index = 0; index < currentLeveL.sequenceLength; index++) {
     sequence.push(GAME_COLORS[getRandomIntInclusive(0, 3)])
   }
+
+  game.currentGeneratedSequence = sequence;
+
+  await renderSequence(sequence);
+
   return sequence;
+}
+
+/**
+ * Display the sequence generated
+ * @param {List} sequence
+ */
+async function renderSequence(sequence) {
+  return new Promise(async resolve => {
+    const counterEl = document.querySelector('.counter');
+    const promptEl = document.querySelector('.play-prompt');
+    const inputPromptEl = document.querySelector('.input-prompt');
+
+    // check if sequence-display is visible
+    hideAllSequenceElements();
+
+    hideElement(inputPromptEl);
+    hideElement(promptEl);
+    showElement(counterEl);
+
+    // display counter
+    await counter(counterEl.firstElementChild, 3, false);
+
+    hideElement(counterEl);
+
+    for (let index = 0; index < sequence.length; index++) {
+      const activeEl = document.querySelector(`.sequence-display > div.${sequence[index]}`)
+
+      activeEl.classList.add('active');
+
+      await sleep(900);
+
+      activeEl.classList.remove('active');
+      await sleep(400);
+    }
+    sequenceHasDisplayed();
+    resolve();
+  })
+
+}
+
+
+function hideAllSequenceElements() {
+  const sequenceElements = document.querySelector('.sequence-display').children;
+  Array.from(sequenceElements)
+    .forEach(el => {
+      el.classList.remove('active');
+    })
 }
 
 /**
  * Shows information prior to user inputing their sequence
  */
 function sequenceHasDisplayed() {
-  // TODO:
+  const inputPromptEl = document.querySelector('.input-prompt');
+  showElement(inputPromptEl);
 }
 
 /**
@@ -129,10 +228,10 @@ function buttonSelected(color) {
   console.log(`Selected ${color}`);
   game.currentInputSequence.push(color);
 
-  if (game.currentInputSequence.length === game.currentLeveL.sequenceLength){
+  if (game.currentInputSequence.length === game.currentLeveL.sequenceLength) {
     disableInput();
     validateSequence();
-    
+
     // reset input
     game.currentInputSequence = [];
   }
