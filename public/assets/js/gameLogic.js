@@ -77,7 +77,7 @@ function newGame() {
  * Random sequence of colors to display
  * @returns list
  */
-async function giveNextSequence() {
+function giveNextSequence() {
     if (!state.renderingSequence) {
         const currentLeveL = state.level;
 
@@ -89,7 +89,7 @@ async function giveNextSequence() {
 
         state.game.currentGeneratedSequence = sequence;
 
-        await renderSequence(sequence);
+        renderSequence(sequence);
 
         return sequence;
     }
@@ -100,40 +100,37 @@ async function giveNextSequence() {
  * @param {List} sequence
  */
 async function renderSequence(sequence) {
-    return new Promise(async resolve => {
-        state.renderingSequence = true;
+    state.renderingSequence = true;
 
-        const promptEl = document.querySelector('.play-prompt');
-        const inputPromptEl = document.querySelector('.input-prompt');
+    const promptEl = document.querySelector('.play-prompt');
+    const inputPromptEl = document.querySelector('.input-prompt');
 
-        hideElement(inputPromptEl);
-        hideElement(promptEl);
+    hideElement(inputPromptEl);
+    hideElement(promptEl);
 
-        if (state.firstGame) {
-            const counterEl = document.querySelector('.counter');
-            showElement(counterEl);
+    if (state.firstGame) {
+        const counterEl = document.querySelector('.counter');
+        showElement(counterEl);
 
-            // display counter
-            await counter(counterEl.firstElementChild, 3, false);
-            hideElement(counterEl);
-            state.firstGame = false;
-        }
+        // display counter
+        await counter(counterEl.firstElementChild, 3, false);
+        hideElement(counterEl);
+        state.firstGame = false;
+    }
 
-        showElement(document.querySelector('.sequence-display'));
+    showElement(document.querySelector('.sequence-display'));
 
-        for (let index = 0; index < sequence.length; index++) {
-            const activeEl = document.querySelector(`.sequence-display > div.${sequence[index]}`);
+    for (let index = 0; index < sequence.length; index++) {
+        const activeEl = document.querySelector(`.sequence-display > div.${sequence[index]}`);
 
-            activeEl.classList.add('active');
+        activeEl.classList.add('active');
 
-            await sleep(900);
+        await sleep(900);
 
-            activeEl.classList.remove('active');
-            await sleep(400);
-        }
-        sequenceHasDisplayed();
-        resolve();
-    })
+        activeEl.classList.remove('active');
+        await sleep(400);
+    }
+    sequenceHasDisplayed();
 }
 
 /**
