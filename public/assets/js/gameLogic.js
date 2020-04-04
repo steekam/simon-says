@@ -1,6 +1,3 @@
-const GAME_COLORS = ["blue", "green", "yellow", "red"];
-let INPUT_MODE = 'TOUCH_MODE';
-
 /**
  * Shows on correct input of user sequence
  */
@@ -16,7 +13,7 @@ async function showSuccess() {
 
     if (game.successStreak == level.successToAdvance) {
         let newLevel = getNextLevel();
-        state.level = {...newLevel};
+        state.level = { ...newLevel };
 
         // reset success streak
         game.successStreak = 0;
@@ -42,13 +39,13 @@ async function showFailure() {
 
     // reset success streak
     game.successStreak = 0;
-    
+
     if (game.failureStreak == level.failureToReset) {
-        level = {...initialLevel()};
-    } else if(level.id !== 1) {
-        level = {...getPreviousLevel()};
+        level = { ...initialLevel() };
+    } else if (level.id !== 1) {
+        level = { ...getPreviousLevel() };
     }
-    
+
     // reset success left to advance
     game.successLeftToAdvance = level.successToAdvance;
 
@@ -69,7 +66,8 @@ function newGame() {
         entriesLeft: 0,
         successLeftToAdvance: 0,
         successStreak: 0,
-        failureStreak: 0
+        failureStreak: 0,
+        inputMode: 'TOUCH_MODE'
     };
 }
 
@@ -78,6 +76,8 @@ function newGame() {
  * @returns list
  */
 function giveNextSequence() {
+    const GAME_COLORS = ["blue", "green", "yellow", "red"];
+
     if (!state.renderingSequence) {
         const currentLeveL = state.level;
 
@@ -184,13 +184,12 @@ function validateSequence() {
     showElement(document.querySelector('.play-prompt'))
 }
 
-
 /**
  * Changes input mode between touch and tilt
  * @param {String} mode 
  */
-function changeMode(mode = 'TOUCH_MODE') {
-    MODE = mode;
+function changeMode(mode) {
+    state.game.inputMode = mode;
 }
 
 /**
@@ -201,10 +200,43 @@ function userChoiceTimeOut() {
     // todo
 }
 
-/**
- * Show a pop up message on the bottom of the screen
- * @param {String} message 
- */
-function displayToastMessage(message) {
-    // todo: might even remove
+function highlightButton(color) {
+    // todo
+}
+
+function showTiltModeInstructions() {
+    // todo
+}
+
+function tiltMode(event) {
+    let { inputMode } = state.game;
+    if (inputMode !== 'TILT_MODE') return;
+
+    /**
+     *  Assuming the phone is in normal orientation
+     *  Beta => front to back direction
+     *  Gamma => left to right direction
+     */
+    let { beta, gamma } = event;
+    beta = parseInt(beta);
+    gamma = parseInt(gamma);
+
+    const THRESHOLD = 20;
+    const GAMMA_LEFT = gamma < parseInt(`-${THRESHOLD}`);
+    const GAMMA_RIGHT = gamma > THRESHOLD;
+    const BETA_UP = beta < parseInt(`-${THRESHOLD}`);
+    const BETA_DOWN = beta > THRESHOLD;
+
+    if (BETA_UP && !(GAMMA_RIGHT || GAMMA_LEFT)) {
+        console.log("up");
+    } else if (BETA_DOWN && !(GAMMA_RIGHT || GAMMA_LEFT)) {
+        console.log("down");
+    }
+
+    if (GAMMA_LEFT && !(BETA_UP || BETA_DOWN)) {
+        console.log("left");
+    } else if (GAMMA_RIGHT && !(BETA_UP || BETA_DOWN)) {
+        console.log("right");
+    }
+
 }

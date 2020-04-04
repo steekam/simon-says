@@ -13,4 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     firstGame: true,
   });
   refreshDom();
+
+  // Listen for orientation changes
+  window.addEventListener("deviceorientation", tiltMode, true);
 });

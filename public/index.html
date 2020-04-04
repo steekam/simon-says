@@ -11,17 +11,18 @@
   <link rel="stylesheet" href="assets/css/main.css">
 </head>
 
-<body class="bg-gray-300 font-sans antialiased">
-  <main id="app" class="pb-10 relative max-w-screen-md mx-auto bg-gray-100 h-screen lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
-    <nav class="w-full bg-white py-3 px-4 bg-teal-700 flex justify-between items-center">
+<body class="font-sans antialiased bg-gray-300">
+  <main id="app"
+    class="relative h-screen max-w-screen-md pb-10 mx-auto bg-gray-100 lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
+    <nav class="flex items-center justify-between w-full px-4 py-3 bg-white bg-teal-700">
       <div>
-        <h1 class="text-xl sm:text-2xl font-bold text-white">Simon Says Game</h1>
+        <h1 class="text-xl font-bold text-white sm:text-2xl">Simon Says Game</h1>
       </div>
 
       <div class="inline-flex">
         <button title="Show instructions" onclick="document.querySelector('.instructions').classList.remove('hidden')"
-          class="mr-2 flex items-center justify-center">
-          <svg class="h-6 w-6 fill-current text-white">
+          class="flex items-center justify-center mr-2">
+          <svg class="w-6 h-6 text-white fill-current">
             <path class="heroicon-ui"
               d="M12 22a10 10 0 110-20 10 10 0 010 20zm0-2a8 8 0 100-16 8 8 0 000 16zM10.59 8.59a1 1 0 11-1.42-1.42 4 4 0 115.66 5.66l-2.12 2.12a1 1 0 11-1.42-1.42l2.12-2.12A2 2 0 0010.6 8.6zM12 18a1 1 0 110-2 1 1 0 010 2z" />
           </svg>
@@ -29,7 +30,7 @@
 
         <div class="inline-flex rounded-md shadow-sm">
           <button type="button" onclick="giveNextSequence()"
-            class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-indigo-700 bg-indigo-100 hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200 transition ease-in-out duration-150">
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-indigo-700 transition duration-150 ease-in-out bg-indigo-100 border border-transparent rounded-md hover:bg-indigo-50 focus:outline-none focus:border-indigo-300 focus:shadow-outline-indigo active:bg-indigo-200">
             Play
           </button>
         </div>
@@ -37,18 +38,18 @@
     </nav>
 
     <!-- Instructions -->
-    <section class="instructions px-4 mt-3 hidden">
-      <div class="px-6 py-3 shadow rounded bg-white relative">
+    <section class="hidden px-4 mt-3 instructions">
+      <div class="relative px-6 py-3 bg-white rounded shadow">
         <button title="Dismiss" onclick="document.querySelector('.instructions').classList.add('hidden')"
-          class="absolute inset-y-0 right-0 mt-2 mr-2 h-6 w-6 flex items-center justify-center">
-          <svg class="h-full w-full" viewBox="0 0 24 24">
+          class="absolute inset-y-0 right-0 flex items-center justify-center w-6 h-6 mt-2 mr-2">
+          <svg class="w-full h-full" viewBox="0 0 24 24">
             <path class="heroicon-ui"
               d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z" />
           </svg>
         </button>
 
         <p class="font-semibold text-teal-600">Instructions:</p>
-        <ul class="list-disc px-2">
+        <ul class="px-2 list-disc">
           <li>Press play</li>
           <li>Wait for the sequence to display</li>
           <li>Repeat the sequence from memory</li>
@@ -58,125 +59,135 @@
     </section>
     <!-- END Instructions -->
 
-    <section>
-      <!-- Game stats -->
-      <div class="mt-2 mx-4 px-6 py-3 shadow rounded bg-white">
+    <!-- Game stats -->
+    <div class="px-3 py-3 bg-white rounded shadow sm:px-6">
+      <div class="flex items-end justify-between mb-2">
         <p class="font-semibold text-teal-600">
           Level: <span class="font-bold" x-text="level.id"></span>
         </p>
-        <ul class="grid grid-cols-2">
-          <li>Sequence Length: <span class="font-bold" x-text="level.sequenceLength"></span> </li>
-          <li>Entries left: <span class="font-bold" x-text="game.entriesLeft"></span></li>
-          <li>Success streak: <span class="font-bold" x-text="game.successStreak"></span></li>
-          <li>Streak to advance: <span class="font-bold" x-text="game.successLeftToAdvance"></span></li>
-        </ul>
+
+        <select onchange="changeMode(this.value)"
+          class="p-1 text-sm bg-white rounded-md shadow outline-none cursor-pointer focus:shadow-outline">
+          <option class="p-2" value="TOUCH_MODE" selected>TOUCH MODE</option>
+          <option class="p-2" value="TILT_MODE">TILT MODE</option>
+        </select>
       </div>
-      <!-- END Game stats -->
-
-      <!-- Sequence Display -->
-      <div class="relative mt-5 h-32 w-32 mx-auto">
-        <div class="play-prompt shadow-lg w-full h-full flex items-center justify-center">
-          <p class="text-base text-gray-700 font-semibold text-center">Click play to start</p>
-        </div>
-
-        <div class="hidden input-prompt shadow-lg w-full h-full flex items-center justify-center">
-          <p class="text-base text-gray-700 font-semibold text-center">Input the sequence</p>
-        </div>
-        
-        <div class="hidden counter shadow-lg w-full h-full flex items-center justify-center">
-          <p class="text-6xl text-gray-700 font-mono"></p>
-        </div>
-
-        <div class="sequence-display hidden relative grid grid-cols-1 grid-rows-1 h-full items-center justify-center">
-          <div class="blue absolute inset-0 w-full h-full bg-blue-500 flex items-center justify-center">
-            <p class="text-white text-xl">Blue</p>
-          </div>
-
-          <div class="green absolute inset-0 w-full h-full bg-green-500 flex items-center justify-center">
-            <p class="text-white text-xl">Green</p>
-          </div>
-          <div class="yellow absolute inset-0 w-full h-full bg-yellow-500 flex items-center justify-center">
-            <p class="text-white text-xl">Yellow</p>
-          </div>
-          <div class="red absolute inset-0 w-full h-full bg-red-500 flex items-center justify-center">
-            <p class="text-white text-xl">Red</p>
-          </div>
-        </div>
-      </div>
-      <!-- END Sequence Display -->
-
-      <!-- Controls -->
-      <div class="mt-10">
-        <div class="controls max-w-md mx-auto">
-          <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('blue')"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-110 active:bg-blue-700 transition ease-in-out duration-150">
-              Blue
-            </button>
-          </div>
-
-          <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('green')"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green focus:transform focus:scale-110 active:bg-green-700 transition ease-in-out duration-150">
-              Green
-            </button>
-          </div>
-
-          <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('yellow')"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:shadow-outline-yellow focus:transform focus:scale-110 active:bg-yellow-700 transition ease-in-out duration-150">
-              Yellow
-            </button>
-          </div>
-
-          <div class="inline-flex rounded-md shadow-sm">
-            <button type="button" onclick="buttonSelected('red')"
-              class="inline-flex items-center px-4 py-2 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red focus:transform focus:scale-110 active:bg-red-700 transition ease-in-out duration-150">
-              Red
-            </button>
-          </div>
-        </div>
-      </div>
-      <!-- END Controls -->
-    </section>
-
-    <!-- MODALS -->
-    <div class="success hidden absolute inset-0 bottom-0">
-        <div class="fixed inset-0">
-          <div class="absolute inset-0 bg-gray-200 opacity-50"></div>
-        </div>
-        <div class="h-full flex justify-center items-center">
-          <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:p-6">
-            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
-              <svg class="h-6 w-6 text-green-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-              </svg>
-            </div>
-            <h3 class="text-lg text-center leading-6 font-medium text-gray-900 mt-2">
-              You got it :)
-            </h3>
-          </div>
-        </div>
+      <ul class="grid grid-cols-2">
+        <li>Sequence Length: <span class="font-bold" x-text="level.sequenceLength"></span> </li>
+        <li>Entries left: <span class="font-bold" x-text="game.entriesLeft"></span></li>
+        <li>Success streak: <span class="font-bold" x-text="game.successStreak"></span></li>
+        <li>Streak to advance: <span class="font-bold" x-text="game.successLeftToAdvance"></span></li>
+      </ul>
     </div>
+    <!-- END Game stats -->
 
-    <div class="failure hidden absolute inset-0 bottom-0">
+    <!-- Sequence Display -->
+    <div class="relative w-32 h-32 mx-auto mt-5">
+      <div class="flex items-center justify-center w-full h-full shadow-lg play-prompt">
+        <p class="text-base font-semibold text-center text-gray-700">Click play to start</p>
+      </div>
+
+      <div class="flex items-center justify-center hidden w-full h-full shadow-lg input-prompt">
+        <p class="text-base font-semibold text-center text-gray-700">Input the sequence</p>
+      </div>
+
+      <div class="flex items-center justify-center hidden w-full h-full shadow-lg counter">
+        <p class="font-mono text-6xl text-gray-700"></p>
+      </div>
+
+      <div class="relative grid items-center justify-center hidden h-full grid-cols-1 grid-rows-1 sequence-display">
+        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-blue-500 blue">
+          <p class="text-xl text-white">Blue</p>
+        </div>
+
+        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-green-500 green">
+          <p class="text-xl text-white">Green</p>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-yellow-500 yellow">
+          <p class="text-xl text-white">Yellow</p>
+        </div>
+        <div class="absolute inset-0 flex items-center justify-center w-full h-full bg-red-500 red">
+          <p class="text-xl text-white">Red</p>
+        </div>
+      </div>
+    </div>
+    <!-- END Sequence Display -->
+
+    <!-- Controls -->
+    <div class="mt-10">
+      <div class="max-w-md mx-auto controls">
+        <div class="inline-flex rounded-md shadow-sm">
+          <button type="button" onclick="buttonSelected('blue')"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-125 active:bg-blue-700">
+            Blue
+          </button>
+        </div>
+
+        <div class="inline-flex rounded-md shadow-sm">
+          <button type="button" onclick="buttonSelected('green')"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green focus:transform focus:scale-125 active:bg-green-700">
+            Green
+          </button>
+        </div>
+
+        <div class="inline-flex rounded-md shadow-sm">
+          <button type="button" onclick="buttonSelected('yellow')"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:shadow-outline-yellow focus:transform focus:scale-125 active:bg-yellow-700">
+            Yellow
+          </button>
+        </div>
+
+        <div class="inline-flex rounded-md shadow-sm">
+          <button type="button" onclick="buttonSelected('red')"
+            class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-red-600 border border-transparent rounded-md hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red focus:transform focus:scale-125 active:bg-red-700">
+            Red
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- END Controls -->
+
+    <!-- SUCCESS  -->
+    <div class="absolute inset-0 bottom-0 hidden success">
       <div class="fixed inset-0">
         <div class="absolute inset-0 bg-gray-200 opacity-50"></div>
       </div>
-      <div class="h-full flex justify-center items-center">
-        <div class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:p-6">
-          <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100">
-            <svg class="h-6 w-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-              <path d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z"/>
+      <div class="flex items-center justify-center h-full">
+        <div class="px-4 pt-5 pb-4 overflow-hidden transition-all transform bg-white rounded-lg shadow-xl sm:p-6">
+          <div class="flex items-center justify-center w-12 h-12 mx-auto bg-green-100 rounded-full">
+            <svg class="w-6 h-6 text-green-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
           </div>
-          <h3 class="text-lg text-center leading-6 font-medium text-gray-900 mt-2">
+          <h3 class="mt-2 text-lg font-medium leading-6 text-center text-gray-900">
+            You got it :)
+          </h3>
+        </div>
+      </div>
+    </div>
+    <!-- END SUCCESS -->
+
+    <!-- FAILURE MODAL -->
+    <div class="absolute inset-0 bottom-0 hidden failure">
+      <div class="fixed inset-0">
+        <div class="absolute inset-0 bg-gray-200 opacity-50"></div>
+      </div>
+      <div class="flex items-center justify-center h-full">
+        <div class="px-4 pt-5 pb-4 overflow-hidden transition-all transform bg-white rounded-lg shadow-xl sm:p-6">
+          <div class="flex items-center justify-center w-12 h-12 mx-auto bg-red-100 rounded-full">
+            <svg class="w-6 h-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+              <path
+                d="M16.24 14.83a1 1 0 01-1.41 1.41L12 13.41l-2.83 2.83a1 1 0 01-1.41-1.41L10.59 12 7.76 9.17a1 1 0 011.41-1.41L12 10.59l2.83-2.83a1 1 0 011.41 1.41L13.41 12l2.83 2.83z" />
+            </svg>
+          </div>
+          <h3 class="mt-2 text-lg font-medium leading-6 text-center text-gray-900">
             Ooops wrong :(
           </h3>
         </div>
       </div>
-  </div>
-    <!-- END MODALS -->
+
+    </div>
+    <!-- END FAILURE MODAL -->
   </main>
 
   <script src="assets/js/util.js"></script>
