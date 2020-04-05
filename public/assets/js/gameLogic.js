@@ -228,12 +228,10 @@ function userChoiceTimeOut() {
 }
 
 function callChoiceTimeout() {
-    console.log("Timeout is called");
     window.choiceTimeout = setTimeout(userChoiceTimeOut, 2000);
 }
 
 function resetChoiceTimeout() {
-    console.log("Reseting timeout");
     clearTimeout(choiceTimeout);
     callChoiceTimeout();
 }
