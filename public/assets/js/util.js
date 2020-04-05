@@ -4,13 +4,13 @@
  * @param {Object} state 
  */
 function createState(state) {
-  return new Proxy(state, {
-    set(target, property, value) {
-      target[property] = value; // default set behaviour
-      refreshDom(); //updated view
-      return true;
-    }
-  })
+    return new Proxy(state, {
+        set(target, property, value) {
+            target[property] = value; // default set behaviour
+            refreshDom(); //updated view
+            return true;
+        }
+    })
 }
 
 /**
@@ -20,12 +20,12 @@ function createState(state) {
  * @param {Object} data State used in binding
  */
 function refreshDom() {
-  walkDom(root, el => {
-    if (el.hasAttribute('x-text')) {
-      let expression = el.getAttribute('x-text');
-      el.innerText = eval(`with (state) { (${expression}) }`);
-    }
-  })
+    walkDom(root, el => {
+        if (el.hasAttribute('x-text')) {
+            let expression = el.getAttribute('x-text');
+            el.innerText = eval(`with (state) { (${expression}) }`);
+        }
+    })
 }
 
 /**
@@ -34,15 +34,15 @@ function refreshDom() {
  * @param {Function} callback 
  */
 function walkDom(el, callback) {
-  callback(el)
+    callback(el)
 
-  el = el.firstElementChild
+    el = el.firstElementChild
 
-  while (el) {
-    walkDom(el, callback)
+    while (el) {
+        walkDom(el, callback)
 
-    el = el.nextElementSibling
-  }
+        el = el.nextElementSibling
+    }
 }
 
 /**
@@ -50,7 +50,7 @@ function walkDom(el, callback) {
  * @param {int} ms 
  */
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 /**
@@ -58,9 +58,9 @@ function sleep(ms) {
 * @param {*} element 
 */
 function hideElement(element) {
-  if (!element.classList.contains('hidden')) {
-      element.classList.add('hidden')
-  }
+    if (!element.classList.contains('hidden')) {
+        element.classList.add('hidden')
+    }
 }
 
 /**
@@ -68,9 +68,9 @@ function hideElement(element) {
 * @param {*} element 
 */
 function showElement(element) {
-  if (element.classList.contains('hidden')) {
-      element.classList.remove('hidden')
-  }
+    if (element.classList.contains('hidden')) {
+        element.classList.remove('hidden')
+    }
 }
 
 /**
@@ -80,9 +80,9 @@ function showElement(element) {
  * @param {Number} max 
  */
 function getRandomIntInclusive(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
 }
 
 /**
@@ -92,57 +92,47 @@ function getRandomIntInclusive(min, max) {
 * @param {boolean} forward Default: true
 */
 async function counter(element, countTo, forward = true) {
-  return new Promise(async resolve => {
-      let count = forward ? 1 : countTo;
-      const condtion = () => forward ? count <= countTo : count > 0;
-      const next = () => forward ? count++ : count--;
+    return new Promise(async resolve => {
+        let count = forward ? 1 : countTo;
+        const condtion = () => forward ? count <= countTo : count > 0;
+        const next = () => forward ? count++ : count--;
 
-      for (count; condtion(); next()) {
-          element.innerHTML = count;
-          await sleep(800);
-      }
-      resolve();
-  });
-}
-
-function disableInputControls() {
-  document.querySelectorAll('.controls button')
-      .forEach(button => button.disabled = true);
-}
-
-function enableInputControls() {
-  document.querySelectorAll('.controls button')
-      .forEach(button => button.disabled = false);
+        for (count; condtion(); next()) {
+            element.innerHTML = count;
+            await sleep(800);
+        }
+        resolve();
+    });
 }
 
 // Level logic
 function initialLevel() {
-  return {
-      id: 1,
-      sequenceLength: 4,
-      successToAdvance: 2,
-      failureToReset: 2
-  };
+    return {
+        id: 1,
+        sequenceLength: 4,
+        successToAdvance: 2,
+        failureToReset: 2
+    };
 }
 
 function getNextLevel() {
-  let { level } = state;
+    let { level } = state;
 
-  return {
-      id: ++level.id,
-      sequenceLength: ++level.sequenceLength,
-      successToAdvance: ++level.successToAdvance,
-      failureToReset: 2
-  }
+    return {
+        id: ++level.id,
+        sequenceLength: ++level.sequenceLength,
+        successToAdvance: ++level.successToAdvance,
+        failureToReset: 2
+    }
 }
 
 function getPreviousLevel() {
-  let { level } = state;
+    let { level } = state;
 
-  return {
-      id: --level.id,
-      sequenceLength: --level.sequenceLength,
-      successToAdvance: --level.successToAdvance,
-      failureToReset: 2
-  }
+    return {
+        id: --level.id,
+        sequenceLength: --level.sequenceLength,
+        successToAdvance: --level.successToAdvance,
+        failureToReset: 2
+    }
 }

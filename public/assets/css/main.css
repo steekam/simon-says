@@ -13974,40 +13974,46 @@ video {
 
 .controls {
   display: grid;
-  grid-template-areas: ". blue ."
-                       "red . green"
-                       ". yellow .";
+  grid-template-areas: ". top ."
+                       "left . right"
+                       ". bottom .";
   justify-items: center;
 }
 
 .controls > div:nth-child(1) {
-  grid-area: blue;
+  grid-area: top;
 }
 
 .controls > div:nth-child(2) {
-  grid-area: green;
+  grid-area: right;
 }
 
 .controls > div:nth-child(3) {
-  grid-area: yellow;
+  grid-area: bottom;
 }
 
 .controls > div:nth-child(4) {
-  grid-area: red;
+  grid-area: left;
+}
+
+.controls > div.highlighted {
+  padding: 0.25rem;
+  border-width: 1px;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
 }
 
 .sequence-display > div:not(.active) {
   visibility: hidden;
-  opacity: 0;
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: linear;
   transition-duration: 500ms;
+  transition-timing-function: linear;
+  opacity: 0;
 }
 
 .sequence-display > div.active {
   transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
-  transition-timing-function: linear;
   transition-duration: 150ms;
+  transition-timing-function: linear;
   -webkit-animation: fadeIn .15s linear;
           animation: fadeIn .15s linear;
 }

@@ -7,34 +7,38 @@
 
 .controls {
   display: grid;
-  grid-template-areas: ". blue ."
-                       "red . green"
-                       ". yellow .";
+  grid-template-areas: ". top ."
+                       "left . right"
+                       ". bottom .";
   justify-items: center;
 }
 
 .controls > div:nth-child(1) {
-  grid-area: blue;
+  grid-area: top;
 }
 
 .controls > div:nth-child(2) {
-  grid-area: green;
+  grid-area: right;
 }
 
 .controls > div:nth-child(3) {
-  grid-area: yellow;
+  grid-area: bottom;
 }
 
 .controls > div:nth-child(4) {
-  grid-area: red;
+  grid-area: left;
+}
+
+.controls > div.highlighted {
+  @apply p-1 border shadow-outline;
 }
 
 .sequence-display > div:not(.active) {
-  @apply invisible opacity-0 transition ease-linear duration-500;
+  @apply invisible transition duration-500 ease-linear opacity-0;
 }
 
 .sequence-display > div.active {
-  @apply transition ease-linear duration-150;
+  @apply transition duration-150 ease-linear;
   animation: fadeIn .15s linear;
 }
 

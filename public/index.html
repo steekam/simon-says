@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simon Says Memory Game</title>
+  <title>Memory Game</title>
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -16,7 +16,7 @@
     class="relative h-screen max-w-screen-md pb-10 mx-auto bg-gray-100 lg:h-full lg:mt-5 lg:rounded-md lg:overflow-hidden lg:shadow">
     <nav class="flex items-center justify-between w-full px-4 py-3 bg-white bg-teal-700">
       <div>
-        <h1 class="text-xl font-bold text-white sm:text-2xl">Simon Says Game</h1>
+        <h1 class="text-xl font-bold text-white sm:text-2xl">Memory Game</h1>
       </div>
 
       <div class="inline-flex">
@@ -60,16 +60,16 @@
     <!-- END Instructions -->
 
     <!-- Game stats -->
-    <div class="px-3 py-3 bg-white rounded shadow sm:px-6">
+    <div class="px-3 py-3 bg-white shadow sm:px-6">
       <div class="flex items-end justify-between mb-2">
         <p class="font-semibold text-teal-600">
           Level: <span class="font-bold" x-text="level.id"></span>
         </p>
 
         <select onchange="changeMode(this.value)"
-          class="p-1 text-sm bg-white rounded-md shadow outline-none cursor-pointer focus:shadow-outline">
-          <option class="p-2" value="TOUCH_MODE" selected>TOUCH MODE</option>
-          <option class="p-2" value="TILT_MODE">TILT MODE</option>
+          class="p-1 text-sm bg-gray-200 rounded-md shadow outline-none cursor-pointer focus:shadow-outline">
+          <option value="TOUCH_MODE" selected>TOUCH MODE</option>
+          <option value="TILT_MODE">TILT MODE</option>
         </select>
       </div>
       <ul class="grid grid-cols-2">
@@ -116,28 +116,28 @@
     <!-- Controls -->
     <div class="mt-10">
       <div class="max-w-md mx-auto controls">
-        <div class="inline-flex rounded-md shadow-sm">
+        <div id="blue" class="inline-flex rounded-md shadow-sm">
           <button type="button" onclick="buttonSelected('blue')"
             class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-blue-600 border border-transparent rounded-md hover:bg-blue-500 focus:outline-none focus:border-blue-700 focus:shadow-outline-blue focus:transform focus:scale-125 active:bg-blue-700">
             Blue
           </button>
         </div>
 
-        <div class="inline-flex rounded-md shadow-sm">
+        <div id="green" class="inline-flex rounded-md shadow-sm">
           <button type="button" onclick="buttonSelected('green')"
             class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-green-600 border border-transparent rounded-md hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green focus:transform focus:scale-125 active:bg-green-700">
             Green
           </button>
         </div>
 
-        <div class="inline-flex rounded-md shadow-sm">
+        <div id="yellow" class="inline-flex rounded-md shadow-sm">
           <button type="button" onclick="buttonSelected('yellow')"
             class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-yellow-600 border border-transparent rounded-md hover:bg-yellow-500 focus:outline-none focus:border-yellow-700 focus:shadow-outline-yellow focus:transform focus:scale-125 active:bg-yellow-700">
             Yellow
           </button>
         </div>
 
-        <div class="inline-flex rounded-md shadow-sm">
+        <div id="red" class="inline-flex rounded-md shadow-sm">
           <button type="button" onclick="buttonSelected('red')"
             class="inline-flex items-center px-4 py-2 text-sm font-medium leading-5 text-white transition duration-150 ease-in-out bg-red-600 border border-transparent rounded-md hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red focus:transform focus:scale-125 active:bg-red-700">
             Red

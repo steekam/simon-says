@@ -59,7 +59,6 @@ async function showFailure() {
 }
 
 function newGame() {
-    disableInputControls();
     return {
         currentGeneratedSequence: [],
         currentInputSequence: [],
@@ -67,7 +66,8 @@ function newGame() {
         successLeftToAdvance: 0,
         successStreak: 0,
         failureStreak: 0,
-        inputMode: 'TOUCH_MODE'
+        inputMode: 'TOUCH_MODE',
+        acceptingInput: false
     };
 }
 
@@ -184,6 +184,22 @@ function validateSequence() {
     showElement(document.querySelector('.play-prompt'))
 }
 
+function disableInputControls() {
+    state.game.acceptingInput = false;
+
+    document.querySelectorAll('.controls button')
+        .forEach(button => button.disabled = true);
+}
+
+function enableInputControls() {
+    state.game.acceptingInput = true;
+
+    if (state.game.inputMode == "TOUCH_MODE") {
+        document.querySelectorAll('.controls button')
+            .forEach(button => button.disabled = false);
+    }
+}
+
 /**
  * Changes input mode between touch and tilt
  * @param {String} mode 
@@ -197,11 +213,56 @@ function changeMode(mode) {
  * 2 seconds
  */
 function userChoiceTimeOut() {
-    // todo
+    if (state.renderingSequence
+        || !state.game.acceptingInput
+        || state.game.inputMode == "TOUCH_MODE"
+        || !state.highlightedColor
+    ) {
+        resetChoiceTimeout();
+        return;
+    }
+
+    // click highlighted color
+    buttonSelected(state.highlightedColor);
+    resetChoiceTimeout();
+}
+
+function callChoiceTimeout() {
+    console.log("Timeout is called");
+    window.choiceTimeout = setTimeout(userChoiceTimeOut, 2000);
+}
+
+function resetChoiceTimeout() {
+    console.log("Reseting timeout");
+    clearTimeout(choiceTimeout);
+    callChoiceTimeout();
 }
 
 function highlightButton(color) {
-    // todo
+    if (!state.game.acceptingInput) return;
+
+    let controlWrappers = document.querySelector('.controls').children;
+
+    Array.from(controlWrappers).forEach(el => {
+        if (el.id == color && !el.classList.contains("highlighted")) {
+            state.highlightedColor = color;
+            el.classList.add('highlighted');
+        } else if (el.id != color && el.classList.contains("highlighted")) {
+            el.classList.remove('highlighted');
+        }
+    });
+}
+
+function resetAllHighlights() {
+    let controlWrappers = document.querySelector('.controls').children;
+
+    Array.from(controlWrappers).forEach(el => {
+        if (el.classList.contains("highlighted")) {
+            el.classList.remove("highlighted");
+        }
+    });
+
+    state.highlightedColor = null;
 }
 
 function showTiltModeInstructions() {
@@ -213,7 +274,7 @@ function tiltMode(event) {
     if (inputMode !== 'TILT_MODE') return;
 
     /**
-     *  Assuming the phone is in normal orientation
+     *  Assuming the phone is in vertical orientation
      *  Beta => front to back direction
      *  Gamma => left to right direction
      */
@@ -228,15 +289,14 @@ function tiltMode(event) {
     const BETA_DOWN = beta > THRESHOLD;
 
     if (BETA_UP && !(GAMMA_RIGHT || GAMMA_LEFT)) {
-        console.log("up");
+        highlightButton("blue");
     } else if (BETA_DOWN && !(GAMMA_RIGHT || GAMMA_LEFT)) {
-        console.log("down");
-    }
-
-    if (GAMMA_LEFT && !(BETA_UP || BETA_DOWN)) {
-        console.log("left");
+        highlightButton("yellow");
+    } else if (GAMMA_LEFT && !(BETA_UP || BETA_DOWN)) {
+        highlightButton("red");
     } else if (GAMMA_RIGHT && !(BETA_UP || BETA_DOWN)) {
-        console.log("right");
+        highlightButton("green");
+    } else {
+        resetAllHighlights();
     }
-
 }

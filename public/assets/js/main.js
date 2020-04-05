@@ -1,19 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Initialise app
-  window.root  = document.querySelector('#app');
+    // Initialise app
+    window.root = document.querySelector('#app');
 
-  let game = newGame();
-  let level = {...initialLevel()};
-  game.successLeftToAdvance = level.successToAdvance;
+    let game = newGame();
+    let level = { ...initialLevel() };
+    game.successLeftToAdvance = level.successToAdvance;
 
-  window.state = createState({
-    game,
-    level,
-    renderingSequence: false,
-    firstGame: true,
-  });
-  refreshDom();
+    window.state = createState({
+        game,
+        level,
+        renderingSequence: false,
+        firstGame: true,
+        highlightedColor: null,
+    });
+    refreshDom();
 
-  // Listen for orientation changes
-  window.addEventListener("deviceorientation", tiltMode, true);
+    // disable inputs initially
+    disableInputControls();
+
+    // Listen for orientation changes
+    window.addEventListener("deviceorientation", tiltMode, true);
+
+    callChoiceTimeout();
 });
